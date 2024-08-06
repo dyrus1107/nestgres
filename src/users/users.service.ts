@@ -1,9 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -11,14 +16,26 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
-  async findUserByEmail(email: string) {
+  async getUserById(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+
+  async getUserByEmail(email: string) {
     const user = await this.usersRepository.findOneBy({ email });
-    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    if (!user) throw new NotFoundException('User not found');
 
     return user;
   }
 
   async createUser(user: CreateUserDto) {
+    const existingUser = await this.usersRepository.findOneBy({
+      email: user.email,
+    });
+    if (existingUser) throw new ConflictException('Email already in use');
+
     const newUser = this.usersRepository.create(user);
     await this.usersRepository.save(newUser);
     return newUser;

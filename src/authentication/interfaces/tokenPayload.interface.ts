@@ -1,0 +1,3 @@
+interface TokenPayLoad {
+  userId: number;
+}
