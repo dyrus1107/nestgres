@@ -1,8 +1,15 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateAuthenticationDto } from './create-authentication.dto';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class RegisterDto {
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsEmail()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(7)
   password: string;
 }
