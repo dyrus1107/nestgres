@@ -31,11 +31,6 @@ export class UsersService {
   }
 
   async createUser(user: CreateUserDto) {
-    const existingUser = await this.usersRepository.findOneBy({
-      email: user.email,
-    });
-    if (existingUser) throw new ConflictException('Email already in use');
-
     const newUser = this.usersRepository.create(user);
     await this.usersRepository.save(newUser);
     return newUser;

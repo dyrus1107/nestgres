@@ -11,7 +11,7 @@ import {
 import PostsService from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import jwtAuthenticationGuard from 'src/authentication/guards/jwtAuthentication.guard';
+import { JwtAuthenticationGuard } from 'src/authentication/guards/jwtAuthentication.guard';
 
 @Controller('posts')
 export default class PostsController {
@@ -28,7 +28,7 @@ export default class PostsController {
   }
 
   @Post()
-  @UseGuards(jwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard)
   async createPost(@Body() post: CreatePostDto) {
     return this.postsService.createPost(post);
   }

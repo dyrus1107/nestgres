@@ -11,18 +11,16 @@ import {
 import { Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/registration.dto';
-import {
-  default as jwtAuthenticationGuard,
-  default as JwtAuthenticationGuard,
-} from './guards/jwtAuthentication.guard';
+
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { RequestWithUser } from './interfaces/requestWithUser.interface';
+import { JwtAuthenticationGuard } from './guards/jwtAuthentication.guard';
 
 @Controller('authentication')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
-  @UseGuards(jwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard)
   @Get()
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;
@@ -42,7 +40,7 @@ export class AuthenticationController {
     const { user } = request;
     const cookie = this.authenticationService.getCookieWithJwtToken(user.id);
     response.setHeader('Set-Cookie', cookie);
-    return user;
+    return response.send(user);
   }
 
   @UseGuards(JwtAuthenticationGuard)
