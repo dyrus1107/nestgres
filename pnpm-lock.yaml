@@ -56,6 +56,9 @@ importers:
       cookie-parser:
         specifier: ^1.4.6
         version: 1.4.6
+      nestgres:
+        specifier: 'file:'
+        version: file:(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -85,7 +88,7 @@ importers:
         specifier: ^10.0.0
         version: 10.1.3(chokidar@3.6.0)(typescript@5.5.4)
       '@nestjs/testing':
-        specifier: ^10.0.0
+        specifier: ^10.3.10
         version: 10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10))
       '@types/express':
         specifier: ^4.17.21
@@ -2301,6 +2304,9 @@ packages:
 
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+
+  'nestgres@file:':
+    resolution: {directory: '', type: directory}
 
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
@@ -5901,6 +5907,53 @@ snapshots:
   negotiator@0.6.3: {}
 
   neo-async@2.6.2: {}
+
+  nestgres@file:(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)):
+    dependencies:
+      '@nestjs/common': 10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/config': 3.2.3(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)
+      '@nestjs/core': 10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/jwt': 10.2.0(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))
+      '@nestjs/mapped-types': 2.0.5(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)
+      '@nestjs/passport': 10.0.3(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(passport@0.7.0)
+      '@nestjs/platform-express': 10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)
+      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(pg@8.12.0)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)))
+      '@types/bcrypt': 5.0.2
+      '@types/cookie-parser': 1.4.7
+      '@types/passport-jwt': 4.0.1
+      '@types/passport-local': 1.0.38
+      bcrypt: 5.1.1
+      class-transformer: 0.5.1
+      class-validator: 0.14.1
+      cookie-parser: 1.4.6
+      passport: 0.7.0
+      passport-jwt: 4.0.1
+      passport-local: 1.0.0
+      pg: 8.12.0
+      reflect-metadata: 0.2.2
+      rxjs: 7.8.1
+      typeorm: 0.3.20(pg@8.12.0)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))
+    transitivePeerDependencies:
+      - '@google-cloud/spanner'
+      - '@nestjs/microservices'
+      - '@nestjs/websockets'
+      - '@sap/hana-client'
+      - better-sqlite3
+      - encoding
+      - hdb-pool
+      - ioredis
+      - mongodb
+      - mssql
+      - mysql2
+      - oracledb
+      - pg-native
+      - pg-query-stream
+      - redis
+      - sql.js
+      - sqlite3
+      - supports-color
+      - ts-node
+      - typeorm-aurora-data-api-driver
 
   node-abort-controller@3.1.1: {}
 
