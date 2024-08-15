@@ -1,12 +1,20 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { PublicFile } from 'src/files/entities/publicFile.entity';
 import Address from './entities/address.entity';
+import { User } from './entities/user.entity';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { FilesModule } from 'src/files/files.module';
+import { PrivateFile } from 'src/private-files/entities/privateFile.entity';
+import { PrivateFilesModule } from 'src/private-files/private-files.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Address])],
+  imports: [
+    TypeOrmModule.forFeature([User, Address, PublicFile, PrivateFile]),
+    FilesModule,
+    PrivateFilesModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
