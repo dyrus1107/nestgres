@@ -11,6 +11,7 @@ import { FilesService } from './files/files.service';
 import { FilesModule } from './files/files.module';
 import { PrivateFilesService } from './private-files/private-files.service';
 import { PrivateFilesModule } from './private-files/private-files.module';
+import { SearchModule } from './search/search.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { PrivateFilesModule } from './private-files/private-files.module';
     CategoriesModule,
     FilesModule,
     PrivateFilesModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
