@@ -10,12 +10,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import PostsService from './posts.service';
+import { JwtAuthenticationGuard } from 'src/authentication/guards/jwtAuthentication.guard';
+import { RequestWithUser } from 'src/authentication/interfaces/requestWithUser.interface';
+import { FindOneParams } from 'src/utils/findOneParams';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { JwtAuthenticationGuard } from 'src/authentication/guards/jwtAuthentication.guard';
-import { FindOneParams } from 'src/utils/findOneParams';
-import { RequestWithUser } from 'src/authentication/interfaces/requestWithUser.interface';
+import PostsService from './posts.service';
 
 @Controller('posts')
 export default class PostsController {
@@ -24,12 +24,12 @@ export default class PostsController {
   @Get()
   async findAllPosts(@Query('search') search: string) {
     if (!search) return this.postsService.getAllPosts();
-
     const searchPosts = await this.postsService.searchForPosts(search);
     return searchPosts;
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthenticationGuard)
   findPostById(@Param('id') { id }: FindOneParams) {
     return this.postsService.getPostById(Number(id));
   }
@@ -39,13 +39,15 @@ export default class PostsController {
   async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
     return this.postsService.createPost(post, req.user);
   }
-
+  
   @Put(':id')
+  @UseGuards(JwtAuthenticationGuard)
   async updatePost(@Param('id') id: string, @Body() post: UpdatePostDto) {
     return this.postsService.updatePost(Number(id), post);
   }
-
+  
   @Delete(':id')
+  @UseGuards(JwtAuthenticationGuard)
   async deletePost(@Param('id') id: string) {
     return this.postsService.deletePost(Number(id));
   }

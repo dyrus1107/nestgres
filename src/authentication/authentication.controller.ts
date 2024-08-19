@@ -25,8 +25,8 @@ export class AuthenticationController {
     private readonly usersService: UsersService,
   ) {}
 
-  @UseGuards(JwtAuthenticationGuard)
   @Get()
+  @UseGuards(JwtAuthenticationGuard)
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;
     user.password = undefined;
@@ -39,9 +39,9 @@ export class AuthenticationController {
     return result;
   }
 
-  @HttpCode(200)
-  @UseGuards(LocalAuthenticationGuard)
   @Post('log-in')
+  @UseGuards(LocalAuthenticationGuard)
+  @HttpCode(200)
   async logIn(@Req() request: RequestWithUser) {
     const { user } = request;
     const accessTokenCookie =
@@ -69,8 +69,8 @@ export class AuthenticationController {
     request.res.setHeader('Set-Cookie', cookies.join('; '))
   }
 
-  @UseGuards(JwtRefreshGuard)
   @Get('refresh')
+  @UseGuards(JwtRefreshGuard)
   refresh(@Req() request: RequestWithUser) {
     const accessTokenCookie =
       this.authenticationService.getCookieWithJwtAccessToken(request.user.id);
