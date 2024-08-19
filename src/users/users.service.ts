@@ -1,16 +1,11 @@
-import {
-  ConflictException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FilesService } from 'src/files/files.service';
+import { PrivateFilesService } from 'src/private-files/private-files.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { FilesService } from 'src/files/files.service';
-import { PrivateFilesService } from 'src/private-files/private-files.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -28,7 +23,6 @@ export class UsersService {
     return user;
   }
 
-  //get all user
   async getAllUsers() {
     return await this.usersRepository.find();
   }
@@ -38,6 +32,18 @@ export class UsersService {
     if (!user) throw new NotFoundException('User not found');
 
     return user;
+  }
+
+  async getUserIfRefreshTokenMatch(userId: number, token: string) {
+    const user = await this.getUserById(userId);
+    const isMatching = await bcrypt.compare(
+      token,
+      user.currentHashedRefreshToken,
+    );
+
+    if (isMatching) {
+      return user;
+    }
   }
 
   async createUser(user: CreateUserDto) {
@@ -70,5 +76,21 @@ export class UsersService {
   async addPrivateFile(userId: number, fileBuffer: Buffer, filename: string) {
     console.log(fileBuffer);
     return this.privateFilesService.uploadFile(userId, fileBuffer, filename);
+  }
+
+  async setCurrentRefreshToken(userId: number, refreshToken: string) {
+    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    await this.usersRepository.update(userId, {
+      currentHashedRefreshToken,
+    });
+  }
+
+  async removeRefreshToken(userId: number) {
+    const user = await this.usersRepository.update(
+      { id: userId },
+      {
+        currentHashedRefreshToken: null,
+      },
+    );
   }
 }
