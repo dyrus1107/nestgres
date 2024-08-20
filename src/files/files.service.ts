@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PublicFile } from './entities/publicFile.entity';
-import { Repository } from 'typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuid } from 'uuid';
@@ -14,6 +14,7 @@ export class FilesService {
     @InjectRepository(PublicFile)
     private readonly publicFileRepository: Repository<PublicFile>,
     private readonly configService: ConfigService,
+    private readonly dataSource: DataSource,
   ) {
     this.bucketName = this.configService.get('AWS_PUBLIC_BUCKET_NAME');
   }
@@ -49,5 +50,22 @@ export class FilesService {
       })
       .promise();
     return fileId;
+  }
+
+  async deletePublicFileWithQueryRunner(
+    fileId: number,
+    queryRunner: QueryRunner,
+  ) {
+    const file = await queryRunner.manager.findOneBy(PublicFile, {
+      id: fileId,
+    });
+    const s3 = new S3();
+    await s3
+      .deleteObject({
+        Bucket: this.bucketName,
+        Key: file.key,
+      })
+      .promise();
+    await queryRunner.manager.delete(PublicFile, fileId);
   }
 }
