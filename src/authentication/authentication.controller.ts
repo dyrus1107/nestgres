@@ -5,18 +5,16 @@ import {
   HttpCode,
   Post,
   Req,
-  Res,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/registration.dto';
 
 import { UsersService } from 'src/users/users.service';
 import { JwtAuthenticationGuard } from './guards/jwtAuthentication.guard';
+import { JwtRefreshGuard } from './guards/JwtRefresh.guard';
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { RequestWithUser } from './interfaces/requestWithUser.interface';
-import { JwtRefreshGuard } from './guards/JwtRefresh.guard';
 
 @Controller('authentication')
 export class AuthenticationController {
